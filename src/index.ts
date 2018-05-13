@@ -8,7 +8,7 @@ let handlers: Alexa.Handlers<Alexa.IntentRequest> = {
   }
 }
 
-export class Handler {
+class Handler {
   constructor(
     event: Alexa.RequestBody<Alexa.Request>,
     context: Alexa.Context,
@@ -20,3 +20,6 @@ export class Handler {
     alexa.execute()
   }
 }
+
+export default (event, context, callback) =>
+  new Handler(event, context, callback)
