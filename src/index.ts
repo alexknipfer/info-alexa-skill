@@ -3,10 +3,10 @@ import * as Alexa from 'alexa-sdk'
 let handlers: Alexa.Handlers<Alexa.IntentRequest> = {
   LaunchRequest: function() {
     let self: Alexa.Handler<Alexa.LaunchRequest> = this
-    self.emit('Greeting')
-  },
-  Greeting: function() {
-    this.emit('Hello there, this is the greeting!')
+    self.emit(
+      ':ask',
+      'You have reached the launch request, how may I help you?'
+    )
   },
   AboutIntent: function() {
     let self: Alexa.Handler<Alexa.IntentRequest> = this
