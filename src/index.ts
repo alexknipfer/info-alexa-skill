@@ -1,6 +1,13 @@
 import * as Alexa from 'alexa-sdk'
 
 let handlers: Alexa.Handlers<Alexa.IntentRequest> = {
+  LaunchRequest: function() {
+    let self: Alexa.Handler<Alexa.LaunchRequest> = this
+    self.emit('Greeting')
+  },
+  Greeting: function() {
+    this.emit('Hello there, this is the greeting!')
+  },
   AboutIntent: function() {
     let self: Alexa.Handler<Alexa.IntentRequest> = this
     let speechOutput = 'This skill was written by Alex Knipfer'
@@ -21,7 +28,7 @@ export class Handler {
   }
 }
 
-export default (
+export const handler = (
   event: Alexa.RequestBody<Alexa.Request>,
   context: Alexa.Context,
   callback: Function
