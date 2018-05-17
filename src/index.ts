@@ -1,4 +1,7 @@
 import * as Alexa from 'alexa-sdk'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 let handlers: Alexa.Handlers<Alexa.IntentRequest> = {
   LaunchRequest: function() {
@@ -22,7 +25,7 @@ export class Handler {
     callback: Function
   ) {
     let alexa = Alexa.handler(event, context)
-    alexa.appId = 'test_id'
+    alexa.APP_ID = process.env.ALEXA_SKILL_ID
     alexa.registerHandlers(handlers)
     alexa.execute()
   }
