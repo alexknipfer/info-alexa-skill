@@ -1,38 +1,9 @@
-import * as Alexa from 'alexa-sdk'
-import * as dotenv from 'dotenv'
+import * as Alexa from 'ask-sdk'
+import { AboutHandler } from './handlers/AboutHandler'
+import { LaunchHandler } from './handlers/LaunchHandler'
 
-dotenv.config()
+const handlers = [new AboutHandler(), new LaunchHandler()]
 
-let handlers: Alexa.Handlers<Alexa.IntentRequest> = {
-  LaunchRequest: function() {
-    let self: Alexa.Handler<Alexa.LaunchRequest> = this
-    self.emit(
-      ':ask',
-      'You have reached the launch request, how may I help you?'
-    )
-  },
-  AboutIntent: function() {
-    let self: Alexa.Handler<Alexa.IntentRequest> = this
-    let speechOutput = 'This skill was written by Alex Knipfer'
-    self.emit(':tellWithCard', speechOutput, "Alex's skill", speechOutput)
-  }
-}
-
-export class Handler {
-  constructor(
-    event: Alexa.RequestBody<Alexa.Request>,
-    context: Alexa.Context,
-    callback: Function
-  ) {
-    let alexa = Alexa.handler(event, context)
-    alexa.APP_ID = process.env.ALEXA_SKILL_ID
-    alexa.registerHandlers(handlers)
-    alexa.execute()
-  }
-}
-
-export const handler = (
-  event: Alexa.RequestBody<Alexa.Request>,
-  context: Alexa.Context,
-  callback: Function
-) => new Handler(event, context, callback)
+export const handler = Alexa.SkillBuilders.custom()
+  .addRequestHandlers(...handlers)
+  .lambda()
