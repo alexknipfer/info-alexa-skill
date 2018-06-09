@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "declaration": true,
+    "declaration": false,
     "target": "es2016",
     "moduleResolution": "node",
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "node"],
     "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src",
