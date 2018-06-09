@@ -8,18 +8,26 @@
     "build": "npm run build-ts",
     "test": "mocha tests/**/*test.js --reporter spec",
     "build-ts": "tsc -p tsconfig.json",
-    "tslint": "tslint -c tslint.json -p tsconfig.json"
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/index.js\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/alexa-sdk": "^1.1.1",
-    "@types/dotenv": "^4.0.3",
     "alexa-sdk": "^1.0.25",
+    "ask-sdk": "^2.0.5",
     "aws-lambda-mock-context": "^3.1.1",
     "chai": "^4.1.2",
     "dotenv": "^5.0.1",
     "mocha": "^5.1.1",
     "reflect-metadata": "^0.1.12"
+  },
+  "devDependencies": {
+    "@types/alexa-sdk": "^1.1.1",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/dotenv": "^4.0.3",
+    "@types/node": "^10.3.2",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.5"
   }
 }
