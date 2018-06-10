@@ -17,6 +17,7 @@
     "alexa-sdk": "^1.0.25",
     "ask-sdk": "^2.0.5",
     "aws-lambda-mock-context": "^3.1.1",
+    "axios": "^0.18.0",
     "chai": "^4.1.2",
     "dotenv": "^5.0.1",
     "mocha": "^5.1.1",
