@@ -13,9 +13,8 @@ export class AxiosClientImpl {
 
     try {
       return axios.request(config)
-    } catch (err) {
-      console.log('ERROR HAS OCCURED: ', err)
-      throw new Error(err)
+    } catch (error) {
+      throw error
     }
   }
 }
