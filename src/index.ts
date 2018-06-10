@@ -1,6 +1,9 @@
 import * as Alexa from 'ask-sdk'
+import * as dotenv from 'dotenv'
 import { AboutHandler } from './handlers/AboutHandler'
 import { LaunchHandler } from './handlers/LaunchHandler'
+
+dotenv.config()
 
 const handlers = [new AboutHandler(), new LaunchHandler()]
 
