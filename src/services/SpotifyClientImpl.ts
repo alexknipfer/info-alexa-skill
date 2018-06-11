@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
 import { encodeBase64 } from '../utils/StringUtils'
-import { AxiosClientImpl } from './AxiosClientImpl'
+import { AxiosClientImpl } from './AxiosClient/AxiosClientImpl'
 
 export class SpotifyClientImpl {
   private axiosClient: any

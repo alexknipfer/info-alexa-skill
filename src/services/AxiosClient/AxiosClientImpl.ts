@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { AxiosClient } from './AxiosClient'
 
-export class AxiosClientImpl {
+export class AxiosClientImpl implements AxiosClient {
   public post(config: AxiosRequestConfig): Promise<AxiosResponse> {
     return this.doRequest('post', config)
   }
