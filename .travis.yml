@@ -1,0 +1,14 @@
+cache:
+  directories:
+    - node_modules
+sudo: false
+language: node_js
+node_js:
+  - "node"
+git:
+   depth: 9999999
+script:
+  - npm run build
+  - npm test
+before_deploy:
+  - rm -rf node_modules coverage test/bin
