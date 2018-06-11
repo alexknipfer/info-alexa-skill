@@ -1,15 +1,16 @@
+import { inject } from 'inversify'
 import { AxiosRequestConfig } from 'axios'
 import { encodeBase64 } from '../utils/StringUtils'
-import { AxiosClientImpl } from './AxiosClient/AxiosClientImpl'
+import { InversifyTypes } from '../models/InversifyTypes'
+import { AxiosClient } from './AxiosClient/AxiosClient'
 
 export class SpotifyClientImpl {
-  private axiosClient: any
   private static readonly baseUrl = 'https://accounts.spotify.com/api/'
   private static readonly tokenUrl = '/token'
 
-  constructor() {
-    this.axiosClient = new AxiosClientImpl()
-  }
+  constructor(
+    @inject(InversifyTypes.AxiosClient) private axiosClient: AxiosClient
+  ) {}
 
   public async getAccessToken() {
     const clientId = process.env.SPOTIFY_CLIENT_ID
