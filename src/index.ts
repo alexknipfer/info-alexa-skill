@@ -1,9 +1,11 @@
 import * as Alexa from 'ask-sdk'
+import * as dotenv from 'dotenv'
+import './InversifyBinder'
 import { AboutHandler } from './handlers/AboutHandler'
 import { LaunchHandler } from './handlers/LaunchHandler'
 
-const handlers = [new AboutHandler(), new LaunchHandler()]
+dotenv.config()
 
 export const handler = Alexa.SkillBuilders.custom()
-  .addRequestHandlers(...handlers)
+  .addRequestHandlers(new AboutHandler(), new LaunchHandler())
   .lambda()
