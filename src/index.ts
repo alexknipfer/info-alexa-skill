@@ -6,8 +6,6 @@ import { LaunchHandler } from './handlers/LaunchHandler'
 
 dotenv.config()
 
-const handlers = [new AboutHandler(), new LaunchHandler()]
-
 export const handler = Alexa.SkillBuilders.custom()
-  .addRequestHandlers(...handlers)
+  .addRequestHandlers(new AboutHandler(), new LaunchHandler())
   .lambda()
