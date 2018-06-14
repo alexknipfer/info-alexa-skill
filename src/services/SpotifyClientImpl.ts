@@ -4,6 +4,12 @@ import { encodeBase64 } from '../utils/StringUtils'
 import { InversifyTypes } from '../models/InversifyTypes'
 import { AxiosClient } from './AxiosClient/AxiosClient'
 
+interface AccessTokenDetails {
+  accessToken: string
+  expiresIn: string
+  issuedAt: number
+}
+
 export class SpotifyClientImpl {
   private static readonly baseUrl = 'https://accounts.spotify.com/api/'
   private static readonly tokenUrl = '/token'
@@ -12,7 +18,7 @@ export class SpotifyClientImpl {
     @inject(InversifyTypes.AxiosClient) private axiosClient: AxiosClient
   ) {}
 
-  public async getAccessToken() {
+  public async getAccessToken(): Promise<AccessTokenDetails> {
     const clientId = process.env.SPOTIFY_CLIENT_ID
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
     const base64auth = encodeBase64(`${clientId}:${clientSecret}`)
@@ -29,9 +35,13 @@ export class SpotifyClientImpl {
 
     try {
       const { data } = await this.axiosClient.post(config)
-      console.log('RESULT: ', data)
+      return {
+        accessToken: data.access_token,
+        expiresIn: data.expires_in,
+        issuedAt: Date.now()
+      } as AccessTokenDetails
     } catch (error) {
-      console.log('THERE WAS AN ERROR: ', error)
+      throw new Error('Error getting auth credential in spotify client.')
     }
   }
 
