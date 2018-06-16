@@ -1,8 +1,9 @@
 import { inject } from 'inversify'
 import { AxiosRequestConfig } from 'axios'
 import { encodeBase64 } from '../utils/StringUtils'
-import { InversifyTypes } from '../models/InversifyTypes'
 import { AxiosClient } from './AxiosClient/AxiosClient'
+import { EnvConfig } from '../config/EnvConfig'
+import { InversifyTypes } from '../inversify.config'
 
 interface AccessTokenDetails {
   accessToken: string
@@ -15,12 +16,13 @@ export class SpotifyClientImpl {
   private static readonly tokenUrl = '/token'
 
   constructor(
+    @inject(InversifyTypes.EnvConfig) private envConfig: EnvConfig,
     @inject(InversifyTypes.AxiosClient) private axiosClient: AxiosClient
   ) {}
 
   public async getAccessToken(): Promise<AccessTokenDetails> {
-    const clientId = process.env.SPOTIFY_CLIENT_ID
-    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
+    const clientId = this.envConfig.spotifyClientId
+    const clientSecret = this.envConfig.spotifyClientSecret
     const base64auth = encodeBase64(`${clientId}:${clientSecret}`)
 
     const headers = {
