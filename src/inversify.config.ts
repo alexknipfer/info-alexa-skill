@@ -12,3 +12,11 @@ export class InversifyConfiguration {
       .inSingletonScope()
   }
 }
+
+export const InversifyTypes = {
+  EnvConfig: Symbol('EnvConfig'),
+  AxiosClient: Symbol('AxiosClient'),
+  SpotifyClient: Symbol('SpotifyClient'),
+  DynamoDBClient: Symbol('DynamoDBClient'),
+  DynamoConfig: Symbol('DynamoConfig')
+}

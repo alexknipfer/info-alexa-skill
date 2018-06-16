@@ -1,7 +1,11 @@
-import { InversifyConfiguration } from './inversify.config'
-import { InversifyTypes } from './models/InversifyTypes'
+import { InversifyConfiguration, InversifyTypes } from './inversify.config'
 import { AxiosClientImpl } from './services/AxiosClient/AxiosClientImpl'
 import { SpotifyClientImpl } from './services/SpotifyClientImpl'
+import { DynamoDBClientImpl } from './services/DynamoDBClient/DynamoDBClientImpl'
+import { EnvConfig } from './config/EnvConfig'
+import { DbConfig } from './config/DbConfig'
+
+InversifyConfiguration.decorateAndBind(InversifyTypes.EnvConfig, EnvConfig)
 
 InversifyConfiguration.decorateAndBind(
   InversifyTypes.AxiosClient,
@@ -12,3 +16,10 @@ InversifyConfiguration.decorateAndBind(
   InversifyTypes.SpotifyClient,
   SpotifyClientImpl
 )
+
+InversifyConfiguration.decorateAndBind(
+  InversifyTypes.SpotifyClient,
+  DynamoDBClientImpl
+)
+
+InversifyConfiguration.decorateAndBind(InversifyTypes.SpotifyClient, DbConfig)
