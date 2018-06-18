@@ -1,5 +1,5 @@
 export class EnvConfig {
-  spotifyTable: string
+  spotifyTableName: string
   spotifyClientId: string
   spotifyClientSecret: string
 
@@ -16,7 +16,7 @@ export class EnvConfig {
       throw new Error('Spotify client secret not defined')
     }
 
-    this.spotifyTable = process.env.SPOTIFY_AUTH_TABLE
+    this.spotifyTableName = process.env.SPOTIFY_AUTH_TABLE
     this.spotifyClientId = process.env.SPOTIFY_CLIENT_ID
     this.spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET
   }
