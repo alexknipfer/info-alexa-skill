@@ -18,8 +18,8 @@ InversifyConfiguration.decorateAndBind(
 )
 
 InversifyConfiguration.decorateAndBind(
-  InversifyTypes.SpotifyClient,
+  InversifyTypes.DynamoDBClient,
   DynamoDBClientImpl
 )
 
-InversifyConfiguration.decorateAndBind(InversifyTypes.SpotifyClient, DbConfig)
+InversifyConfiguration.decorateAndBind(InversifyTypes.DynamoConfig, DbConfig)
