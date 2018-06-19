@@ -6,6 +6,10 @@ export class AxiosClientImpl implements AxiosClient {
     return this.doRequest('post', config)
   }
 
+  public get(config: AxiosRequestConfig): Promise<AxiosResponse> {
+    return this.doRequest('get', config)
+  }
+
   private doRequest(
     method: string,
     config: AxiosRequestConfig
