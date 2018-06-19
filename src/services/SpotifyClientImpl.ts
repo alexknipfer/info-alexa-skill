@@ -14,8 +14,10 @@ interface AccessTokenDetails {
 }
 
 export class SpotifyClientImpl {
-  private static readonly baseUrl = 'https://accounts.spotify.com/api/'
+  private static readonly apiBaseUrl = 'https://api.spotify.com/v1/'
+  private static readonly accountBaseUrl = 'https://accounts.spotify.com/api/'
   private static readonly tokenUrl = '/token'
+  private static readonly searchUrl = '/search'
 
   constructor(
     @inject(InversifyTypes.EnvConfig) private envConfig: EnvConfig,
@@ -23,7 +25,30 @@ export class SpotifyClientImpl {
     @inject(InversifyTypes.DynamoDBClient) private dynamoClient: DynamoDBClient
   ) {}
 
-  public async fetchAccessToken() {
+  public async getArtistByName(name: string) {
+    const query = `?q=${name}&type=artist`
+    const url = SpotifyClientImpl.searchUrl + query
+
+    const { accessToken } = await this.fetchAccessToken()
+    const headers = { Authorization: `Bearer ${accessToken}` }
+
+    const config: AxiosRequestConfig = this.getConfig(
+      SpotifyClientImpl.apiBaseUrl,
+      url,
+      headers
+    )
+
+    try {
+      const {
+        data: { artists }
+      } = await this.axiosClient.get(config)
+      return artists.items && artists.items.length > 0 ? artists.items[0] : null
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async fetchAccessToken(): Promise<AccessTokenDetails> {
     const params: DocumentClient.GetItemInput = {
       TableName: this.envConfig.spotifyTableName,
       Key: {
@@ -54,7 +79,7 @@ export class SpotifyClientImpl {
 
         return accessTokenDetails
       } else {
-        return result.Item
+        return result.Item as AccessTokenDetails
       }
     } else {
       const accessTokenDetails = await this.getNewAccessToken()
@@ -84,6 +109,7 @@ export class SpotifyClientImpl {
     }
 
     const config: AxiosRequestConfig = this.getConfig(
+      SpotifyClientImpl.accountBaseUrl,
       SpotifyClientImpl.tokenUrl,
       headers,
       '&grant_type=client_credentials'
@@ -102,18 +128,19 @@ export class SpotifyClientImpl {
   }
 
   private getConfig(
+    baseURL: string,
     url: string,
     headers?: {},
     data?: {} | string
   ): AxiosRequestConfig {
     const config: AxiosRequestConfig = {
-      baseURL: SpotifyClientImpl.baseUrl,
+      baseURL,
       url,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         ...headers
       },
-      data: data ? data : {}
+      data: data ? data : undefined
     }
 
     return config
