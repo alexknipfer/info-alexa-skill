@@ -48,7 +48,7 @@ export class SpotifyClientImpl {
     }
   }
 
-  public async fetchAccessToken(): Promise<AccessTokenDetails> {
+  private async fetchAccessToken(): Promise<AccessTokenDetails> {
     const params: DocumentClient.GetItemInput = {
       TableName: this.envConfig.spotifyTableName,
       Key: {
