@@ -10,7 +10,7 @@
     "build-ts": "tsc -p tsconfig.json",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/index.js\"",
-    "lambda-pkg": "node scripts/lambda-pkg.js"
+    "lambda-pkg": "node scripts/deploy-lambda.js"
   },
   "author": "",
   "license": "ISC",

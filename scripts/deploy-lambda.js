@@ -1,7 +1,7 @@
 const { cd, cp, exec, ln, mkdir } = require('shelljs')
 const path = require('path')
 
-const lambdaPkg = async () => {
+const deployLambda = async () => {
   const projectPath = path.join(__dirname, '..')
   try {
     await execute(`cp -r ${projectPath}/dist ${projectPath}/deploy`)
@@ -24,6 +24,16 @@ const lambdaPkg = async () => {
   } catch (error) {
     throw new Error('Error zipping deploy dir')
   }
+
+  cd('..')
+
+  try {
+    execute(
+      'aws lambda update-function-code --function-name SpotifyAlexaSkill --zip-file fileb://deploy.zip'
+    )
+  } catch (error) {
+    throw new Error('Error deploying lambda to aws')
+  }
 }
 
 const execute = cmd => {
@@ -39,8 +49,8 @@ const execute = cmd => {
   })
 }
 
-module.exports = lambdaPkg
+module.exports = deployLambda
 
 if (require.main === module) {
-  lambdaPkg()
+  deployLambda()
 }
