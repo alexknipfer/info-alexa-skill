@@ -14,9 +14,17 @@ export class InversifyConfiguration {
 }
 
 export const InversifyTypes = {
+  // Handlers
+  ArtistTopTrackHandler: Symbol('ArtistTopTrackHandler'),
+  AboutHandler: Symbol('AboutHandler'),
+  LaunchHandler: Symbol('LaunchHandler'),
+
+  // Config
   EnvConfig: Symbol('EnvConfig'),
+  DynamoConfig: Symbol('DynamoConfig'),
+
+  // Services
   AxiosClient: Symbol('AxiosClient'),
   SpotifyClient: Symbol('SpotifyClient'),
-  DynamoDBClient: Symbol('DynamoDBClient'),
-  DynamoConfig: Symbol('DynamoConfig')
+  DynamoDBClient: Symbol('DynamoDBClient')
 }
