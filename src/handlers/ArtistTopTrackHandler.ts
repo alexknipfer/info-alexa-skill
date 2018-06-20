@@ -4,10 +4,11 @@ import { RequestTypes, IntentTypes } from '../lib/contants'
 import { IntentRequest, Response } from 'ask-sdk-model'
 import { InversifyTypes } from '../inversify.config'
 import { SpotifyArtist } from '../interfaces/spotify/SpotifyArtist'
+import { SpotifyClient } from '../services/SpotifyClient/SpotifyClient'
 
 export class ArtistTopTrackHandler implements RequestHandler {
   constructor(
-    @inject(InversifyTypes.SpotifyClient) private spotifyClient: any
+    @inject(InversifyTypes.SpotifyClient) private spotifyClient: SpotifyClient
   ) {}
 
   public canHandle(input: HandlerInput): boolean {
