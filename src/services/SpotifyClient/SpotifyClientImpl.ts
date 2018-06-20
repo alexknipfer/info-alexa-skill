@@ -1,11 +1,13 @@
 import { inject } from 'inversify'
 import { AxiosRequestConfig } from 'axios'
-import { encodeBase64 } from '../utils/StringUtils'
-import { AxiosClient } from './AxiosClient/AxiosClient'
-import { EnvConfig } from '../config/EnvConfig'
-import { InversifyTypes } from '../inversify.config'
-import { DynamoDBClient } from './DynamoDBClient/DynamoDBClient'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+import { encodeBase64 } from '../../utils/StringUtils'
+import { AxiosClient } from '../AxiosClient/AxiosClient'
+import { EnvConfig } from '../../config/EnvConfig'
+import { InversifyTypes } from '../../inversify.config'
+import { DynamoDBClient } from '../DynamoDBClient/DynamoDBClient'
+import { SpotifyArtist } from '../../interfaces/spotify/SpotifyArtist'
+import { SpotifyClient } from './SpotifyClient'
 
 interface AccessTokenDetails {
   accessToken: string
@@ -13,7 +15,7 @@ interface AccessTokenDetails {
   issuedAt: number
 }
 
-export class SpotifyClientImpl {
+export class SpotifyClientImpl implements SpotifyClient {
   private static readonly apiBaseUrl = 'https://api.spotify.com/v1/'
   private static readonly accountBaseUrl = 'https://accounts.spotify.com/api/'
   private static readonly tokenUrl = '/token'
@@ -25,7 +27,7 @@ export class SpotifyClientImpl {
     @inject(InversifyTypes.DynamoDBClient) private dynamoClient: DynamoDBClient
   ) {}
 
-  public async getArtistByName(name: string) {
+  public async getArtistByName(name: string): Promise<SpotifyArtist> {
     const query = `?q=${name}&type=artist`
     const url = SpotifyClientImpl.searchUrl + query
 
