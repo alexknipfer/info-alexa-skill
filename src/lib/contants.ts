@@ -11,5 +11,6 @@ export enum IntentTypes {
   Fallback = 'AMAZON.FallbackIntent',
   TopSpeakers = 'TopSpeakers',
   UpcomingEvents = 'UpcomingEvents',
-  About = 'AboutIntent'
+  About = 'AboutIntent',
+  ArtistTopTrack = 'ArtistTopTrackIntent'
 }
