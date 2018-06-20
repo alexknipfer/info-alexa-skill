@@ -25,7 +25,7 @@ export class ArtistTopTrackHandler implements RequestHandler {
       ? intentRequest.intent.slots['artistName'].value
       : undefined
 
-    if (intentRequest.intent.slots) {
+    if (artistName) {
       const artist: SpotifyArtist = await this.spotifyClient.getArtistByName(
         artistName
       )
