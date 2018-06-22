@@ -55,7 +55,7 @@ describe('AboutHandler', () => {
       }
     }
 
-    aboutHandler.handle(handlerInput)
+    aboutHandler.handle(handlerInput as any)
     expect(builder.speak).toHaveBeenCalledWith(
       'This skill was written by Alex Knipfer'
     )
