@@ -34,6 +34,13 @@ const deployLambda = async () => {
   } catch (error) {
     throw new Error('Error deploying lambda to aws')
   }
+
+  try {
+    await execute('rm deploy.zip')
+    await execute('rm -rf deploy')
+  } catch (error) {
+    throw new Error('Error removing deploy folder')
+  }
 }
 
 const execute = cmd => {
