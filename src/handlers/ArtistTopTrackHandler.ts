@@ -1,3 +1,4 @@
+import * as moment from 'moment'
 import { RequestHandler, HandlerInput } from 'ask-sdk'
 import { inject } from 'inversify'
 import { RequestTypes, IntentTypes } from '../lib/contants'
@@ -29,9 +30,19 @@ export class ArtistTopTrackHandler implements RequestHandler {
       const artist: SpotifyArtist = await this.spotifyClient.getArtistByName(
         artistName
       )
-      // TODO - Lookup top tracks by artist id
+
+      const [topTrack] = await this.spotifyClient.getTopTracksByArtistId(
+        artist.id
+      )
+
       return input.responseBuilder
-        .speak(`Artist name is ${artist.name}`)
+        .speak(
+          `The number one streamed song from ${artist.name} is ${
+            topTrack.name
+          } and released on ${moment(topTrack.album.release_date).format(
+            'MMMM d, YYYY'
+          )}`
+        )
         .getResponse()
     } else {
       const speakMessage = 'I was unable recognize the artist.'
