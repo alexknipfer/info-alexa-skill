@@ -8,6 +8,7 @@ import { InversifyTypes } from '../../inversify.config'
 import { DynamoDBClient } from '../DynamoDBClient/DynamoDBClient'
 import { SpotifyArtist } from '../../interfaces/spotify/SpotifyArtist'
 import { SpotifyClient } from './SpotifyClient'
+import { SpotifyTrack } from '../../interfaces/spotify/SpotifyTrack'
 
 interface AccessTokenDetails {
   accessToken: string
@@ -20,6 +21,7 @@ export class SpotifyClientImpl implements SpotifyClient {
   private static readonly accountBaseUrl = 'https://accounts.spotify.com/api/'
   private static readonly tokenUrl = '/token'
   private static readonly searchUrl = '/search'
+  private static readonly artistsUrl = '/artists'
 
   constructor(
     @inject(InversifyTypes.EnvConfig) private envConfig: EnvConfig,
@@ -45,6 +47,28 @@ export class SpotifyClientImpl implements SpotifyClient {
         data: { artists }
       } = await this.axiosClient.get(config)
       return artists.items && artists.items.length > 0 ? artists.items[0] : null
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async getTopTracksByArtistId(id: string): Promise<SpotifyTrack[]> {
+    const url = `${SpotifyClientImpl.artistsUrl}/${id}/top-tracks?country=us`
+
+    const { accessToken } = await this.fetchAccessToken()
+    const headers = { Authorization: `Bearer ${accessToken}` }
+
+    const config: AxiosRequestConfig = this.getConfig(
+      SpotifyClientImpl.apiBaseUrl,
+      url,
+      headers
+    )
+
+    try {
+      const {
+        data: { tracks }
+      } = await this.axiosClient.get(config)
+      return tracks
     } catch (error) {
       throw error
     }
