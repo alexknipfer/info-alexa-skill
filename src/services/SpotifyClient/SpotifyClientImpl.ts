@@ -46,7 +46,7 @@ export class SpotifyClientImpl implements SpotifyClient {
       const {
         data: { artists }
       } = await this.axiosClient.get(config)
-      return artists.items && artists.items.length > 0 ? artists.items[0] : null
+      return artists.items.length > 0 ? artists.items[0] : null
     } catch (error) {
       throw error
     }
