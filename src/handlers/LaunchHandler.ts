@@ -8,7 +8,7 @@ export class LaunchHandler implements RequestHandler {
   }
 
   public handle(input: HandlerInput): Response {
-    const speakText = 'You have reached the launch request, how may I help you?'
+    const speakText = 'Welcome to the spotify skill, how may I help you?'
     return input.responseBuilder
       .speak(speakText)
       .reprompt(speakText)
