@@ -26,27 +26,34 @@ export class ArtistTopTrackHandler implements RequestHandler {
       ? intentRequest.intent.slots['artistName'].value
       : undefined
 
-    if (artistName) {
-      const artist: SpotifyArtist = await this.spotifyClient.getArtistByName(
-        artistName
-      )
-
-      const [topTrack] = await this.spotifyClient.getTopTracksByArtistId(
-        artist.id
-      )
-
+    if (!artistName) {
       return input.responseBuilder
-        .speak(
-          `The number one streamed song from ${artist.name} is ${
-            topTrack.name
-          } and released on ${moment(topTrack.album.release_date).format(
-            'MMMM d, YYYY'
-          )}`
-        )
+        .speak('I was unable to recognize the artist.')
         .getResponse()
-    } else {
-      const speakMessage = 'I was unable recognize the artist.'
-      return input.responseBuilder.speak(speakMessage).getResponse()
     }
+
+    const artist: SpotifyArtist = await this.spotifyClient.getArtistByName(
+      artistName
+    )
+
+    if (!artist) {
+      return input.responseBuilder
+        .speak(`I was unable to find the artist ${artistName}`)
+        .getResponse()
+    }
+
+    const [topTrack] = await this.spotifyClient.getTopTracksByArtistId(
+      artist.id
+    )
+
+    const text = topTrack
+      ? `The number one streamed song from ${artist.name} is ${
+          topTrack.name
+        } and released on ${moment(topTrack.album.release_date).format(
+          'MMMM d, YYYY'
+        )}`
+      : `I was unable to find a top track for ${artist.name}`
+
+    return input.responseBuilder.speak(text).getResponse()
   }
 }
