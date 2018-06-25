@@ -10,7 +10,7 @@ import { SpotifyArtist } from '../../interfaces/spotify/SpotifyArtist'
 import { SpotifyClient } from './SpotifyClient'
 import { SpotifyTrack } from '../../interfaces/spotify/SpotifyTrack'
 
-interface AccessTokenDetails {
+export interface AccessTokenDetails {
   accessToken: string
   expiresIn: number
   issuedAt: number
