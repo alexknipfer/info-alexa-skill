@@ -10,6 +10,8 @@ module.exports = {
     'src/**/*.{ts,tsx,js,jsx}',
     '!src/**/*.d.ts',
     '!src/inversify.config.ts',
+    '!src/InversifyBinder.ts',
+    '!src/index.ts',
     '!src/models/*'
   ],
   testPathIgnorePatterns: ['/node_modules/', '/coverage/', '/dist/']
