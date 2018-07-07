@@ -4,10 +4,11 @@ import { SpotifyClient } from '../../src/services/SpotifyClient/SpotifyClient'
 import { SpotifyClientImpl } from '../../src/services/SpotifyClient/SpotifyClientImpl'
 import { AxiosClient } from '../../src/services/AxiosClient/AxiosClient'
 import { DynamoDBClient } from '../../src/services/DynamoDBClient/DynamoDBClient'
-import { getSpotifyArtist } from '../testUtils'
+import { getSpotifyArtist, getSpotifyTrack } from '../testUtils'
 import { SpotifyArtist } from '../../src/interfaces/spotify/SpotifyArtist'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { AxiosRequestConfig } from 'axios'
+import { SpotifyTrack } from '../../src/interfaces/spotify/SpotifyTrack';
 
 describe('SpotifyClient', () => {
   let spotifyClient: SpotifyClient
@@ -153,4 +154,50 @@ describe('SpotifyClient', () => {
         expect(result).toEqual(artistResult)
       })
   })
+
+  it('getArtistByName - get top tracks by artist id', () => {
+    const accessTokenResult: DocumentClient.GetItemOutput = {
+      Item: {
+        accessToken: 'accessToken',
+        expiresIn: 3600,
+        issuedAt: Date.now()
+      }
+    }
+
+    const expectedDbParams: DocumentClient.GetItemInput = {
+      TableName: envConfigMock.spotifyTableName,
+      Key: {
+        id: 'AccessToken'
+      }
+    }
+
+    const expectedAxiosConfig: AxiosRequestConfig = {
+      baseURL: 'https://api.spotify.com/v1/',
+      url: '/artists/artistId/top-tracks?country=us',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: 'Bearer accessToken'
+      },
+      data: undefined
+    }
+
+    const trackResult = getSpotifyTrack()
+
+    dynamoDBClientMock.get = jest.fn(
+      () => new Promise(resolve => resolve(accessTokenResult))
+    )
+    axiosClientMock.get = jest.fn(
+      () =>
+        new Promise(resolve =>
+          resolve({ data: { tracks: [trackResult] } })
+        )
+    )
+
+    return spotifyClient
+      .getTopTracksByArtistId('artistId')
+      .then((result: SpotifyTrack[]) => {
+        expect(dynamoDBClientMock.get).toBeCalledWith(expectedDbParams)
+        expect(axiosClientMock.get).toBeCalledWith(expectedAxiosConfig)
+        expect(result).toEqual([trackResult]);
+      })
 })
