@@ -1,7 +1,7 @@
 export class EnvConfig {
-  spotifyTableName: string
-  spotifyClientId: string
-  spotifyClientSecret: string
+  public spotifyTableName: string
+  public spotifyClientId: string
+  public spotifyClientSecret: string
 
   constructor() {
     if (!process.env.SPOTIFY_AUTH_TABLE) {

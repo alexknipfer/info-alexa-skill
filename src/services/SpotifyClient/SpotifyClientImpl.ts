@@ -48,7 +48,7 @@ export class SpotifyClientImpl implements SpotifyClient {
       } = await this.axiosClient.get(config)
       return artists.items.length > 0 ? artists.items[0] : null
     } catch (error) {
-      throw error
+      console.error('ERROR GETTING ARTIST: ', error)
     }
   }
 
@@ -70,7 +70,7 @@ export class SpotifyClientImpl implements SpotifyClient {
       } = await this.axiosClient.get(config)
       return tracks
     } catch (error) {
-      throw error
+      console.error('ERROR GETTING TOP TRACKS: ', error)
     }
   }
 
@@ -100,7 +100,7 @@ export class SpotifyClientImpl implements SpotifyClient {
         try {
           await this.dynamoClient.put(params)
         } catch (error) {
-          throw error
+          console.error('ERROR STORING ACCESS TOKEN: ', error)
         }
 
         return accessTokenDetails
@@ -118,7 +118,7 @@ export class SpotifyClientImpl implements SpotifyClient {
       try {
         await this.dynamoClient.put(params)
       } catch (error) {
-        throw error
+        console.error('ERROR STORING ACCESS TOKEN: ', error)
       }
 
       return accessTokenDetails
